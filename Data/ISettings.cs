@@ -7,5 +7,6 @@ namespace Data
     {
         IEnumerable<Settings> GetAllSettings();
         Settings GetSettingsByType(string type);
+        IEnumerable<Settings> GetMergedSettings(string type1, string type2);
     }
 }

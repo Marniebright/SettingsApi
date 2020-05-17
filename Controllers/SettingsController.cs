@@ -31,5 +31,18 @@ namespace Controllers
 
             return NotFound();
         }
+
+        [HttpGet("merge/{type1}/{type2}")]
+        public ActionResult <Settings> GetMergedSettings(string type1, string type2)
+        {
+            var settings = _mockSettings.GetMergedSettings(type1, type2);
+
+            if (settings != null)
+            {
+                return Ok(settings);
+            }
+
+            return NotFound();
+        }
     }
 }

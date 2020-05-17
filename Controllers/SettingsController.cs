@@ -11,11 +11,6 @@ namespace Controllers
     public class SettingsController : ControllerBase
     {
         private readonly MockSettings _mockSettings = new MockSettings();
-        private readonly ISettings _settings;
-        public SettingsController(ISettings settings)
-        {
-            _settings = settings;
-        }
 
         [HttpGet]
         public ActionResult <IEnumerable<Settings>> GetAllSettings()
@@ -27,8 +22,14 @@ namespace Controllers
         [HttpGet("{type}")]
         public ActionResult <Settings> GetSettingsByType(string type)
         {
-            var settings = _mockSettings.GetSettingsByType();
-            return Ok(settings);
+            var settings = _mockSettings.GetSettingsByType(type);
+
+            if (settings != null)
+            {
+                return Ok(settings);
+            }
+
+            return NotFound();
         }
     }
 }

@@ -6,6 +6,6 @@ namespace Data
     public interface ISettings
     {
         IEnumerable<Settings> GetAllSettings();
-        Settings GetSettingsByType();
+        Settings GetSettingsByType(string type);
     }
 }

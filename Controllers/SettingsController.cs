@@ -1,35 +1,34 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
 using Models;
+using Data;
 
 namespace Controllers
 {
-    [Produces("application/json")]
+    //[Produces("application/json")]
     [Route("api/settings")]
-    public class SettingsController
+    [ApiController]
+    public class SettingsController : ControllerBase
     {
-        Settings[] settings = new Settings[] 
+        private readonly MockSettings _mockSettings = new MockSettings();
+        private readonly ISettings _settings;
+        public SettingsController(ISettings settings)
         {
-            new Settings { Type = "FullStackDeveloperSettings"},
-            new Settings { Type = "WebDeveloperSettings"},
-        };
-
-        [HttpGet]
-        public IEnumerable<Settings> ListAllSettings()
-        {
-            return settings;
+            _settings = settings;
         }
 
-        [HttpGet("type/{value}")]
-        public IEnumerable<Settings> ListSettingsByType(string value)
+        [HttpGet]
+        public ActionResult <IEnumerable<Settings>> GetAllSettings()
         {
-            IEnumerable<Settings> newValue = 
-                from val in settings 
-                where val.Type.Equals(value)
-                select val;
+            var settings = _mockSettings.GetAllSettings();
+            return Ok(settings);
+        }
 
-            return newValue;
+        [HttpGet("{type}")]
+        public ActionResult <Settings> GetSettingsByType(string type)
+        {
+            var settings = _mockSettings.GetSettingsByType();
+            return Ok(settings);
         }
     }
 }

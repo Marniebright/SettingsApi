@@ -1,28 +1,29 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using Models;
+using Services;
 using Data;
 
 namespace Controllers
 {
-    //[Produces("application/json")]
+    [Produces("application/json")]
     [Route("api/settings")]
     [ApiController]
     public class SettingsController : ControllerBase
     {
-        private readonly MockSettings _mockSettings = new MockSettings();
+        private readonly SettingsService _service = new SettingsService();
 
         [HttpGet]
-        public ActionResult <IEnumerable<Settings>> GetAllSettings()
+        public ActionResult <Dictionary<string, Settings>> GetAllSettings()
         {
-            var settings = _mockSettings.GetAllSettings();
+            var settings = _service.GetAllSettings();
             return Ok(settings);
         }
 
-        [HttpGet("{type}")]
-        public ActionResult <Settings> GetSettingsByType(string type)
+        [HttpGet("{filename}")]
+        public ActionResult <Settings> GetSettingsByConfigFile(string filename)
         {
-            var settings = _mockSettings.GetSettingsByType(type);
+            var settings = _service.GetSettingsByConfigFile(filename);
 
             if (settings != null)
             {
@@ -32,10 +33,12 @@ namespace Controllers
             return NotFound();
         }
 
-        [HttpGet("merge/{type1}/{type2}")]
-        public ActionResult <Settings> GetMergedSettings(string type1, string type2)
+        //[HttpGet("merge?filename={filename1}&&filename={filename2}")]
+        
+        [HttpGet("merge/{fileName1}/{filename2}")]
+        public ActionResult <Settings> GetMergedConfigFile(string filename1, string filename2)
         {
-            var settings = _mockSettings.GetMergedSettings(type1, type2);
+            var settings = _service.GetMergedConfigFile(filename1, filename2);
 
             if (settings != null)
             {

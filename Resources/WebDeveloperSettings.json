@@ -1,0 +1,12 @@
+{
+    "GlobalSettings": 
+    {
+        "ApiKey": "xxxx",
+        "ApiUser": "globaluser"
+    },
+    "WebsiteSettings": 
+    {
+        "ApiKey": "xxxx",
+        "ApiUser": "website"
+    }
+}

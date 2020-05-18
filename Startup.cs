@@ -12,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Data;
+using Services;
 
 namespace SettingsApi
 {
@@ -27,7 +28,7 @@ namespace SettingsApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddScoped<ISettings, MockSettings>();
+            services.AddScoped<ISettings, SettingsService>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Settings API", Version = "v1" });

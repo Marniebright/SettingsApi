@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using Models;
 using Services;
-using Data;
 
 namespace Controllers
 {

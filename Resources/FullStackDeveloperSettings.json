@@ -1,0 +1,12 @@
+{
+    "ServerSettings": 
+    {
+        "ApiKey": "xxxx",
+        "ApiUser": "admin"
+    },
+    "WebsiteSettings": 
+    {
+        "ApiKey": "xxxx",
+        "ApiUser": "thiswillbeoverriden"
+    }
+}

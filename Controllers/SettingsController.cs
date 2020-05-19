@@ -22,29 +22,20 @@ namespace Controllers
         [HttpGet("{filename}")]
         public ActionResult <Settings> GetSettingsByConfigFile(string filename)
         {
-            try 
-            {
-                var settings = _service.GetSettingsByConfigFile(filename);
+            var settings = _service.GetSettingsByConfigFile(filename);
 
-                if (settings != null)
-                {
-                    return Ok(settings);
-                }
-
-                return NotFound();
-            }
-            catch 
+            if (settings != null)
             {
-                return NotFound();
+                return Ok(settings);
             }
+
+            return NotFound();
         }
 
         [HttpGet("merge")]
         public ActionResult <Settings> GetMergedConfigFile(string filename1, string filename2)
         {
-            try 
-            {
-                var settings = _service.GetMergedConfigFile(filename1, filename2);
+           var settings = _service.GetMergedConfigFile(filename1, filename2);
 
                 if (settings != null)
                 {
@@ -52,12 +43,6 @@ namespace Controllers
                 }
 
                 return NotFound();
-            }
-            catch
-            {
-                return NotFound();
-            }
-
         }
     }
 }

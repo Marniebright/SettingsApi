@@ -38,24 +38,38 @@ namespace Services
 
         public Dictionary<string, Settings> GetSettingsByConfigFile(string filename)
         {
-            string filePath = @"Resources\\" + $"{filename}.json";
+            try 
+            {
+                string filePath = @"Resources\\" + $"{filename}.json";
                 
-            Dictionary<string, Settings> settingsDictionary = JsonConvert.DeserializeObject<Dictionary<string, Settings>>
-            (
-                File.ReadAllText(filePath)
-            );
+                Dictionary<string, Settings> settingsDictionary = JsonConvert.DeserializeObject<Dictionary<string, Settings>>
+                (
+                    File.ReadAllText(filePath)
+                );
 
-            return settingsDictionary;
+                return settingsDictionary;
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         public Dictionary<string, Settings> GetMergedConfigFile(string filename1, string filename2)
         {
-            Dictionary<string, Settings> settingsDictionary = GetSettingsByConfigFile(filename1);
-            Dictionary<string, Settings> tempDictionary = GetSettingsByConfigFile(filename2);
+           try 
+           {
+                Dictionary<string, Settings> settingsDictionary = GetSettingsByConfigFile(filename1);
+                Dictionary<string, Settings> tempDictionary = GetSettingsByConfigFile(filename2);
+                
+                UpdateDuplicateKeys(tempDictionary, settingsDictionary);
             
-            UpdateDuplicateKeys(tempDictionary, settingsDictionary);
-        
-            return settingsDictionary;
+                return settingsDictionary;
+           }
+           catch
+           {
+                return null;
+           }
         }
         
         private void UpdateDuplicateKeys(Dictionary<string, Settings> tempDictionary, Dictionary<string, Settings> settingsDictionary)

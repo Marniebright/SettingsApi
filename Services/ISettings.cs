@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Models;
 
-namespace Data
+namespace Services
 {
     public interface ISettings
     {

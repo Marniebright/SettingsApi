@@ -1,9 +1,7 @@
-using System;
+using System.IO;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using Models;
-using Data;
-using System.IO;
 
 namespace Services 
 {
@@ -14,27 +12,25 @@ namespace Services
             Dictionary<string, Settings> settingsDictionary = new Dictionary<string, Settings>();
 
             foreach(string file in Directory.GetFiles("Resources", "*.json"))
-            {
+            {  
                 using(StreamReader r = File.OpenText(file))
                 {
                     Dictionary<string, Settings> tempDictionary = JsonConvert.DeserializeObject<Dictionary<string, Settings>>
                     (
                         File.ReadAllText(file)
                     );
-                    settingsDictionary = tempDictionary;
-
-                    // foreach(var item in tempDictionary)
-                    // {
-                    //     if (settingsDictionary.ContainsKey(item.Key))
-                    //     {
-                    //         continue;
-                    //     }
-                    //     else 
-                    //     {
-                    //         settingsDictionary.Add(item.Key, item.Value);
-                    //     }
-                    // }
-
+                   
+                    foreach(var item in tempDictionary)
+                    {
+                        if (settingsDictionary.ContainsKey(item.Key))
+                        {
+                            continue;
+                        }
+                        else 
+                        {
+                            settingsDictionary.Add(item.Key, item.Value);
+                        }
+                    }
                 }
             }
             return settingsDictionary;
@@ -51,10 +47,10 @@ namespace Services
 
             return settingsDictionary;
         }
-        
+
         public Dictionary<string, Settings> GetMergedConfigFile(string filename1, string filename2)
         {
-            Dictionary<string, Settings> settingsDictionary =GetSettingsByConfigFile(filename1);
+            Dictionary<string, Settings> settingsDictionary = GetSettingsByConfigFile(filename1);
             Dictionary<string, Settings> tempDictionary = GetSettingsByConfigFile(filename2);
             
             UpdateDuplicateKeys(tempDictionary, settingsDictionary);

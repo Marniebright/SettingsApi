@@ -32,9 +32,7 @@ namespace Controllers
             return NotFound();
         }
 
-        //[HttpGet("merge?filename={filename1}&&filename={filename2}")]
-        
-        [HttpGet("merge/{fileName1}/{filename2}")]
+        [HttpGet("merge")]
         public ActionResult <Settings> GetMergedConfigFile(string filename1, string filename2)
         {
             var settings = _service.GetMergedConfigFile(filename1, filename2);

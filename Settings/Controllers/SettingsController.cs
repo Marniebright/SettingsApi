@@ -37,12 +37,12 @@ namespace Controllers
         {
            var settings = _service.GetMergedConfigFile(filename1, filename2);
 
-                if (settings != null)
-                {
-                    return Ok(settings);
-                }
+            if (settings != null)
+            {
+                return Ok(settings);
+            }
 
-                return NotFound();
+            return NotFound();
         }
     }
 }

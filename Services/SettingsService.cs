@@ -9,10 +9,9 @@ namespace Services
 {
     public class SettingsService : ISettings
     {  
-         Dictionary<string, Settings> settingsDictionary;
         public Dictionary<string, Settings> GetAllSettings()
         { 
-            settingsDictionary = new Dictionary<string, Settings>();
+            Dictionary<string, Settings> settingsDictionary = new Dictionary<string, Settings>();
 
             foreach(string file in Directory.GetFiles("Resources", "*.json"))
             {
@@ -41,31 +40,30 @@ namespace Services
             return settingsDictionary;
         }
 
-        //get by file
         public Dictionary<string, Settings> GetSettingsByConfigFile(string filename)
         {
-            DeserializeJsonFile(filename);
+            string filePath = @"Resources\\" + $"{filename}.json";
+                
+            Dictionary<string, Settings> settingsDictionary = JsonConvert.DeserializeObject<Dictionary<string, Settings>>
+            (
+                File.ReadAllText(filePath)
+            );
+
             return settingsDictionary;
         }
-
-        //get by 2 files
+        
         public Dictionary<string, Settings> GetMergedConfigFile(string filename1, string filename2)
         {
-            string filePath1 = @"Resources\\" + $"{filename1}.json";
-            string filePath2 = @"Resources\\" + $"{filename2}.json";
-                
-            Dictionary<string, Settings> tempDictionary = JsonConvert.DeserializeObject<Dictionary<string, Settings>>
-            (
-                File.ReadAllText(filePath1)
-            );
-
-            Dictionary<string, Settings> tempDictionary2 = JsonConvert.DeserializeObject<Dictionary<string, Settings>>
-            (
-                File.ReadAllText(filePath2)
-            );
-
-            Dictionary<string, Settings> settingsDictionary = new Dictionary<string, Settings>(tempDictionary);
-
+            Dictionary<string, Settings> settingsDictionary =GetSettingsByConfigFile(filename1);
+            Dictionary<string, Settings> tempDictionary = GetSettingsByConfigFile(filename2);
+            
+            UpdateDuplicateKeys(tempDictionary, settingsDictionary);
+        
+            return settingsDictionary;
+        }
+        
+        private void UpdateDuplicateKeys(Dictionary<string, Settings> tempDictionary, Dictionary<string, Settings> settingsDictionary)
+        {
             foreach(var item in tempDictionary)
             {
                 if(settingsDictionary.ContainsKey(item.Key))
@@ -77,30 +75,6 @@ namespace Services
                     settingsDictionary.Add(item.Key, item.Value);
                 }
             }
-
-            foreach(var item in tempDictionary2)
-            {
-                if(settingsDictionary.ContainsKey(item.Key))
-                {
-                    settingsDictionary[item.Key] = item.Value;
-                }
-                else 
-                {
-                    settingsDictionary.Add(item.Key, item.Value);
-                }
-            }
-            
-            return settingsDictionary;
-        }
-        
-        private void DeserializeJsonFile(string filename)
-        {
-            string filePath = @"Resources\\" + $"{filename}.json";
-                
-            settingsDictionary = JsonConvert.DeserializeObject<Dictionary<string, Settings>>
-            (
-                File.ReadAllText(filePath)
-            );
         }
     }
 }
